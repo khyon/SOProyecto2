@@ -5,9 +5,11 @@
  */
 package Vista.Controladores.ventanas;
 
+import UnidadesDeMemoria.Proceso;
 import Vista.Generadas.FormProcessJPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import org.edisoncor.gui.button.ButtonAero;
 import org.edisoncor.gui.textField.TextField;
 
@@ -21,6 +23,7 @@ public class FormProcessView implements ActionListener {
     private ButtonAero acceptButton;
     private ButtonAero cancelButton;
     private TextField sizeProcessField;
+    private ArrayList<Proceso> listaProceso;
 
     public FormProcessView() {
         formProcessView = new FormProcessJPanel();
@@ -35,6 +38,7 @@ public class FormProcessView implements ActionListener {
 
         if (acceptButton == pressedButton) {
             addProcess();
+            setEmptyFields();
         }
 
         if (cancelButton == pressedButton) {
@@ -62,7 +66,11 @@ public class FormProcessView implements ActionListener {
     }
 
     private void addProcess() {
-        
+        listaProceso = new ArrayList();
+        int size = Integer.parseInt(sizeProcessField.getText());
+        for (int k = 0; k < listaProceso.size(); k++) {
+            listaProceso.add(new Proceso(size, k+1)); 
+        }
     }
 
 }

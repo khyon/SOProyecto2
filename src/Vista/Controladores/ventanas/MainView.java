@@ -171,7 +171,8 @@ public class MainView implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Oprimir \"Aceptar\" de la sección de \"Tamaño\" para definir los tamaños");
             } else {
                 disableElements();
-                JOptionPane.showMessageDialog(null, "Por implementar...");
+                updateProcessTable();
+
             }
         }
     }

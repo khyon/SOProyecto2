@@ -103,6 +103,11 @@ public class MainJPanel extends javax.swing.JFrame {
 
         addButton.setBackground(new java.awt.Color(0, 204, 51));
         addButton.setText("Adición");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
 
         processTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -131,6 +136,11 @@ public class MainJPanel extends javax.swing.JFrame {
 
         selfAddButton.setBackground(new java.awt.Color(0, 204, 51));
         selfAddButton.setText("Adición Automática");
+        selfAddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selfAddButtonActionPerformed(evt);
+            }
+        });
 
         addIconPanel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Iconos/add-multiple.db.png"))); // NOI18N
 
@@ -558,6 +568,14 @@ public class MainJPanel extends javax.swing.JFrame {
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addButtonActionPerformed
+
+    private void selfAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selfAddButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selfAddButtonActionPerformed
 
     /**
      * @param args the command line arguments
