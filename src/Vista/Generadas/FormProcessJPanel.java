@@ -82,7 +82,7 @@ public class FormProcessJPanel extends javax.swing.JFrame {
         acceptButton.setText("Agregar");
 
         cancelButton.setBackground(new java.awt.Color(153, 0, 0));
-        cancelButton.setText("Cancelar");
+        cancelButton.setText("Listo");
 
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);

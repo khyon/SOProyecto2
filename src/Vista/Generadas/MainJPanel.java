@@ -294,6 +294,8 @@ public class MainJPanel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        processTALTable.setFocusable(false);
+        processTALTable.setRowSelectionAllowed(false);
         jScrollPane2.setViewportView(processTALTable);
         if (processTALTable.getColumnModel().getColumnCount() > 0) {
             processTALTable.getColumnModel().getColumn(0).setResizable(false);
@@ -392,6 +394,9 @@ public class MainJPanel extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        processTPTable.setEnabled(false);
+        processTPTable.setFocusable(false);
+        processTPTable.setRowSelectionAllowed(false);
         jScrollPane3.setViewportView(processTPTable);
         if (processTPTable.getColumnModel().getColumnCount() > 0) {
             processTPTable.getColumnModel().getColumn(0).setResizable(false);
