@@ -8,8 +8,6 @@ package Memoria;
 import UnidadesDeMemoria.Particiones;
 import UnidadesDeMemoria.Proceso;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  *
