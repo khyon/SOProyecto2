@@ -118,6 +118,26 @@ public class MainView implements ActionListener {
         ID_ProcesoActual = proceso_actual;
     }
 
+    public void updateAddProcess() {
+        Proceso kernel = new Proceso(tamaño_kernel, 0);
+
+        if (firstAdjustRadioButton.isSelected()) {
+            actionFirstAdjustAlgorithm(kernel);
+        } else {
+            if (betterAdjustRadioButton.isSelected()) {
+                actionBetterAdjustAlgorithm(kernel);
+            } else {
+                if (worstAdjustRadioButton.isSelected()) {
+                    actionWorstAdjustAlgorithm(kernel);
+                }
+            }
+        }
+    }
+
+    public void updateProcessTable() {
+        tableManager.setModel(listaProceso);
+    }
+
     public void uptadeSizePanel(int tamaño_proceso) {
         setRamAvailable(tamaño_proceso, "-");
         setRamOccupy(tamaño_proceso, "+");
@@ -136,29 +156,31 @@ public class MainView implements ActionListener {
         if (processTable.getRowCount() > 0) {
             if (ID_ProcesoActual < listaProceso.size()) {
                 if (tableManager.isRowSelected()) {
-                    int filaSeleccionada = tableManager.getIdOfSelectedRow()-1;
-                    
-                    if (firstAdjustRadioButton.isSelected()) {
-                        memoriaPrimerAjuste.Asigna_AreaLibrePMRA(listaProceso.get(filaSeleccionada));
-                        memoriaPrimerAjuste.imprimir();
-                    } else {
-                        if (betterAdjustRadioButton.isSelected()) {
-                            memoriaMejorAjuste.Asigna_AreaLibreMA(listaProceso.get(filaSeleccionada));
-                            memoriaMejorAjuste.imprimir();
+                    int filaSeleccionada = tableManager.getIdOfSelectedRow() - 1;
+                    String filaSeleccionada_temp = "" + tableManager.getIdOfSelectedRow();
+                    if (!listaProcesosenTabla.contains(filaSeleccionada_temp)) {
+                        if (firstAdjustRadioButton.isSelected()) {
+                            memoriaPrimerAjuste.Asigna_AreaLibrePMRA(listaProceso.get(filaSeleccionada));
+                            memoriaPrimerAjuste.imprimir();
                         } else {
-                            if (worstAdjustRadioButton.isSelected()) {
-                                memoriaPeorAjuste.Asigna_AreaLibrePA(listaProceso.get(filaSeleccionada));
-                                memoriaPeorAjuste.imprimir();
+                            if (betterAdjustRadioButton.isSelected()) {
+                                memoriaMejorAjuste.Asigna_AreaLibreMA(listaProceso.get(filaSeleccionada));
+                                memoriaMejorAjuste.imprimir();
+                            } else {
+                                if (worstAdjustRadioButton.isSelected()) {
+                                    memoriaPeorAjuste.Asigna_AreaLibrePA(listaProceso.get(filaSeleccionada));
+                                    memoriaPeorAjuste.imprimir();
+                                }
                             }
                         }
+                        setRamAvailable(listaProceso.get(filaSeleccionada).getTamaño(), "-");
+                        setRamOccupy(listaProceso.get(filaSeleccionada).getTamaño(), "+");
+                        setDataMemoryPanel();
+                        listaProcesosenTabla.add(filaSeleccionada_temp);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Proceso YA agregado");
                     }
-                    setRamAvailable(listaProceso.get(filaSeleccionada).getTamaño(), "-");
-                    setRamOccupy(listaProceso.get(filaSeleccionada).getTamaño(), "+");
-                    setDataMemoryPanel();
-                    String filaSeleccionada_temp = ""+tableManager.getIdOfSelectedRow();
-                    listaProcesosenTabla.add(filaSeleccionada_temp);
-                    System.out.println("\nLISTA PROCSOS_ADD : \n" + listaProcesosenTabla);
-                    
+
                 } else {
                     JOptionPane.showMessageDialog(null, "Seleccione el proceso a Agregar");
                 }
@@ -179,12 +201,17 @@ public class MainView implements ActionListener {
                 ramAvailable = tamaño_memoria;
                 tamaño_kernel = Integer.parseInt(kernelField.getText());
                 ramOccupy = tamaño_kernel;
-                if (tamaño_kernel > (tamaño_memoria / 2)) {
-                    JOptionPane.showMessageDialog(null, "Tamaño del Kernel muy grande. (Para fines didácticos debe ser menor que la mitad de la RAM.)");
+
+                if (tamaño_memoria <= 0 || tamaño_kernel <= 0) {
+                    JOptionPane.showMessageDialog(null, "Tamaño debe ser mayor a 0 ");
                 } else {
-                    disableElements();
-                    setRamAvailable(tamaño_kernel, "-");
-                    setDataMemoryPanel();                    
+                    if (tamaño_kernel > (tamaño_memoria / 2)) {
+                        JOptionPane.showMessageDialog(null, "Tamaño del Kernel muy grande. (Para fines didácticos debe ser menor que la mitad de la RAM.)");
+                    } else {
+                        disableElements();
+                        setRamAvailable(tamaño_kernel, "-");
+                        setDataMemoryPanel();
+                    }
                 }
             } catch (NumberFormatException exception) {
                 JOptionPane.showMessageDialog(null, "Ingresar sólo números");
@@ -197,9 +224,8 @@ public class MainView implements ActionListener {
             if (acceptSizeButton.isEnabled()) {
                 JOptionPane.showMessageDialog(null, "Oprimir \"Aceptar\" de la sección de \"Tamaño\" para definir los tamaños");
             } else {
-                FormProcessView formProcessView = new FormProcessView(ramAvailable,ID_ProcesoActual);
-//                disableElements();
-//                updateProcessTable();
+                FormProcessView formProcessView = new FormProcessView(ramAvailable, ID_ProcesoActual);
+                disableElements();
             }
         }
     }
@@ -218,7 +244,7 @@ public class MainView implements ActionListener {
         tamaño_kernel = 0;
         ramOccupy = 0;
         ramAvailable = 0;
-        ID_ProcesoActual=0;
+        ID_ProcesoActual = 0;
         setDataMemoryPanel();
         setFields(0, 0);
         setAcceptButtonText("Agregar Evento");
@@ -238,15 +264,15 @@ public class MainView implements ActionListener {
     }
 
     private void actionWorstAdjustAlgorithm(Proceso kernel) {
-        memoriaPeorAjuste = new PeorAjuste(tamaño_memoria,tamaño_kernel);
+        memoriaPeorAjuste = new PeorAjuste(tamaño_memoria, tamaño_kernel);
         memoriaPeorAjuste.Asigna_AreaLibrePA(kernel);
     }
-    
+
     private void actionExtractProcess() {
         if (!listaTP.isEmpty()) {
             if (tableManager.isRowSelected()) {
                 int filaSeleccionada = tableManager.getIdOfSelectedRow();
-                String filaSeleccionada_temp = ""+filaSeleccionada;
+                String filaSeleccionada_temp = "" + filaSeleccionada;
                 System.out.println("LISTA_PROCESO_EXTRACT_IF : " + listaProcesosenTabla);
                 if (listaProcesosenTabla.contains(filaSeleccionada_temp)) {
                     setRamAvailable(listaProceso.get(filaSeleccionada - 1).getTamaño(), "+");
@@ -260,7 +286,6 @@ public class MainView implements ActionListener {
                         if (betterAdjustRadioButton.isSelected()) {
                             memoriaMejorAjuste.extraer_proceso(filaSeleccionada);
                             memoriaMejorAjuste.imprimir();
-
                         } else {
                             memoriaPeorAjuste.extraer_proceso(filaSeleccionada);
                             memoriaPeorAjuste.imprimir();
@@ -291,19 +316,19 @@ public class MainView implements ActionListener {
 
         setDataMemoryPanel();
 
-        Proceso kernel = new Proceso(tamaño_kernel, 0);
-
-        if (firstAdjustRadioButton.isSelected()) {
-            actionFirstAdjustAlgorithm(kernel);
-        } else {
-            if (betterAdjustRadioButton.isSelected()) {
-                actionBetterAdjustAlgorithm(kernel);
-            } else {
-                if (worstAdjustRadioButton.isSelected()) {
-                    actionWorstAdjustAlgorithm(kernel);
-                }
-            }
-        }
+        //Proceso kernel = new Proceso(tamaño_kernel, 0);
+        updateAddProcess();
+//        if (firstAdjustRadioButton.isSelected()) {
+//            actionFirstAdjustAlgorithm(kernel);
+//        } else {
+//            if (betterAdjustRadioButton.isSelected()) {
+//                actionBetterAdjustAlgorithm(kernel);
+//            } else {
+//                if (worstAdjustRadioButton.isSelected()) {
+//                    actionWorstAdjustAlgorithm(kernel);
+//                }
+//            }
+//        }
     }
 
     private void addActionListenerToComponentsView() {
@@ -394,14 +419,12 @@ public class MainView implements ActionListener {
         return emptyFields;
     }
 
-    public void selfAddProcess() {
+    private void selfAddProcess() {
         Proceso proceso1 = new Proceso(40, 1);
         Proceso proceso2 = new Proceso(100, 2);
         Proceso proceso3 = new Proceso(200, 3);
         Proceso proceso4 = new Proceso(60, 4);
         Proceso proceso5 = new Proceso(62, 5);
-        Proceso proceso6 = new Proceso(222, 6);
-        Proceso proceso7 = new Proceso(240, 7);
         listaProceso.add(proceso1);
         listaProceso.add(proceso2);
         listaProceso.add(proceso3);
@@ -413,10 +436,10 @@ public class MainView implements ActionListener {
         acceptButton.setText(text);
     }
 
-     private void setExtractButtonText(String text) {
+    private void setExtractButtonText(String text) {
         acceptButton.setText(text);
     }
-    
+
     private void setDataMemoryPanel() {
         ramAvailableField.setText("" + getRamAvailable());
         ramOccupyField.setText("" + getRamOccupy());
@@ -453,10 +476,6 @@ public class MainView implements ActionListener {
             ramOccupy = ramOccupy - agregarTamaño;
         }
 
-    }
-  
-    private void updateProcessTable() {
-        tableManager.setModel(listaProceso);
     }
 
 }

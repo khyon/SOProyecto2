@@ -32,7 +32,7 @@ public class FormProcessView implements ActionListener {
     public FormProcessView(int memoria_disponible, int proceso_actual) {
         this();
         this.memoria_disponible = memoria_disponible;
-        this.proceso_actual = proceso_actual;
+        this.proceso_actual = proceso_actual+1;
         listaProceso = new ArrayList();
     }
 
@@ -73,6 +73,7 @@ public class FormProcessView implements ActionListener {
     }
 
     private void showPreviousView() {
+        updateProcessTable();
         formProcessView.dispose();
     }
 
@@ -97,6 +98,12 @@ public class FormProcessView implements ActionListener {
         } catch (NumberFormatException exception) {
             JOptionPane.showMessageDialog(null, "Sólo ingresar números");
         }
+    }
+
+    private void updateProcessTable() {
+        view.setListaProceso(listaProceso);
+        view.updateProcessTable();
+        view.updateAddProcess();
     }
 
 }
