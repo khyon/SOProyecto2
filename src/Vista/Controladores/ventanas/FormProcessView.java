@@ -102,6 +102,7 @@ public class FormProcessView implements ActionListener {
 
     private void updateProcessTable() {
         view.setListaProceso(listaProceso);
+        
         view.updateProcessTable();
         view.updateAddProcess();
     }

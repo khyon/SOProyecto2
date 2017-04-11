@@ -306,7 +306,7 @@ public class MainView implements ActionListener {
     }
 
     private void actionSelfAddProcess() {
-        setMemory();
+        setMemory(512,50);
 
         disableElements();
         disableElementAddProcessButton();
@@ -451,10 +451,10 @@ public class MainView implements ActionListener {
         setAcceptButtonText("Agregar Evento a la Memoria");
     }
 
-    private void setMemory() {
-        tamaño_memoria = 512;
+    public void setMemory(int memoria, int kernel) {
+        tamaño_memoria = memoria;
         ramAvailable = tamaño_memoria;
-        tamaño_kernel = 50;
+        tamaño_kernel = kernel;
         ramOccupy = tamaño_kernel;
 
 //        setRamOccupy(tamaño_kernel, "+");
