@@ -5,6 +5,9 @@
  */
 package Memoria;
 
+import static Test.MainTest.view;
+import static Vista.Controladores.ventanas.MainView.listaTAL;
+import static Vista.Controladores.ventanas.MainView.listaTP;
 import UnidadesDeMemoria.Particiones;
 import UnidadesDeMemoria.Proceso;
 import java.util.ArrayList;
@@ -30,8 +33,22 @@ public abstract class GestionRAM {
         return localidad;
     }
       public void imprimir() {
+          listaTP.clear();
+          listaTAL.clear();
         for (int i = 1; i < RAM.size(); i++) {
             System.out.println(RAM.get(i));
+//            System.out.println(RAM + "\n***** NUEVO DE RAM ******\n");
+            
+            if(RAM.get(i).estado){
+                listaTP.add(RAM.get(i));
+                
+            }else{
+                listaTAL.add(RAM.get(i));
+                
+            }
+            view.updateTPTable();
+            view.updateTALTable();
+            
         }
     }
 

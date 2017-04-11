@@ -121,8 +121,8 @@ public class MejorAjuste extends GestionRAM {
     }
 
     public void ObtenerMejorAjuste(Proceso proceso) {
-        for (int k = 1; k < RAM.size(); k++) {
-            RAM.get(k).setAjuste(Math.abs(RAM.get(k).getTamaño() - proceso.getTamaño()));
+        for (int k = 0; k < Comparaciones.size(); k++) {
+            Comparaciones.get(k).setAjuste(Math.abs(Comparaciones.get(k).getTamaño() - proceso.getTamaño()));
         }
         for (int i = 0; i < Comparaciones.size() - 1; i++) {
             for (int j = i + 1; j < Comparaciones.size(); j++) {
@@ -169,7 +169,7 @@ public class MejorAjuste extends GestionRAM {
                                     etiqueta++;
                                     RAM.get(i).setTamaño(proceso.getTamaño());
                                     RAM.get(i).setProceso(proceso.getId());
-                                    RAM.add(separacion);
+                                    RAM.add(i+1,separacion);
                                     RAM.get(i + 1).setLocalidad(calcula_localidad(i + 1));
                                     Ordena_tamañosAscendentes();
                                     fusion_contigua();
@@ -177,10 +177,7 @@ public class MejorAjuste extends GestionRAM {
                                 }
                             }
                         }
-                    } else if (compactacion(proceso, Comparaciones) == false) {
-                        System.out.println("El proceso entra en cola");
-                        ColaEspera.add(proceso);
-                    }
+                    } 
                 }
             }
             if (compactacion(proceso, Comparaciones) == false) {
@@ -201,7 +198,7 @@ public class MejorAjuste extends GestionRAM {
                 if (proceso.getTamaño() == RAM.get(i).getTamaño()) {
                     RAM.get(i).setTamaño(proceso.getTamaño());
                     RAM.get(i).setProceso(proceso.getId());
-                    break;
+                    return true;
                 }
                 Particiones separacion = new Particiones(false, Math.abs(proceso.getTamaño() - RAM.get(i).getTamaño()), 0, 0, etiqueta);
                 etiqueta++;
@@ -211,7 +208,7 @@ public class MejorAjuste extends GestionRAM {
                 RAM.get(i + 1).setLocalidad(calcula_localidad(i + 1));
                 Ordena_tamañosAscendentes();
                 fusion_contigua();
-                break;
+                return true;
             }
             if (RAM.get(i).isEstado() == false) {
                 IndiceFragmentaciones.add(RAM.get(i));

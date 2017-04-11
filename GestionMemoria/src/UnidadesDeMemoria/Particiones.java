@@ -5,11 +5,11 @@
  */
 package UnidadesDeMemoria;
 
-import UnidadesDeMemoria.Proceso;
+import static Test.MainTest.view;
 
 /**
  *
- * @author Andres
+ * @author Mario
  */
 public class Particiones {
  public boolean estado;
@@ -100,21 +100,23 @@ public class Particiones {
     }
 
     @Override
-    public String toString(){
-        if(estado==false){
-            return  " \n ID particion =" + id + 
-                "\n Estado =" + estado + 
-                 "\n Localidad =" + localidad + 
-                "\n Tamaño =" + tamaño +
-                "\n Orden =" + orden; 
-                }
-       else{   
-               return "\n ID particion =" + id + 
-                "\n Estado =" + estado + 
-                "\n Localidad =" + localidad +        
-                "\n Tamaño =" + tamaño + 
-                "\n Proceso =" +"P"+proceso;
-       
-    }}
-   
+    public String toString() {
+
+        String imprimir = " \n ID particion = " + id
+                + "\n Estado = " + estado
+                + "\n Localidad = " + localidad
+                + "\n Tamaño = " + tamaño;
+        if (estado == false) {
+            //view.updateTALTable();
+
+            return imprimir
+                    + "\n Orden =" + orden;
+        } else {
+            //view.updateTPTable();
+            return imprimir
+                    + "\n Proceso =" + "P" + proceso;
+
+        }
+    }
+
 }

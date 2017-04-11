@@ -8,8 +8,6 @@ package Memoria;
 import UnidadesDeMemoria.Particiones;
 import UnidadesDeMemoria.Proceso;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  *
@@ -49,17 +47,19 @@ public class PrimerAjuste extends GestionRAM {
                 break;
             }
         }
-    }
-
-    public void Ordena_localidades() {
-
-        for (int i = 1; i < RAM.size(); i++) {
-            if (RAM.get(i).isEstado() == false) {
-                RAM.get(i).setOrden(i);
-            }
+    }    
+  public void Ordena_localidades() {
+        
+        int y = 1;
+        int cuenta_orden = 1;
+        for (int n = 1; n < RAM.size(); n++) {
+           if(RAM.get(n).isEstado()==false){
+               RAM.get(n).setOrden(cuenta_orden);
+               cuenta_orden++;
         }
+        
     }
-
+    }
     public boolean compactacion(Proceso proceso, ArrayList<Particiones> IndiceFragmentaciones) {
 
         if (IndiceFragmentaciones.size() > 0) {
@@ -114,7 +114,7 @@ public class PrimerAjuste extends GestionRAM {
                     etiqueta++;
                     RAM.get(i).setTamaño(proceso.getTamaño());
                     RAM.get(i).setProceso(proceso.getId());
-                    RAM.add(separacion);
+                    RAM.add(i+1,separacion);
                     RAM.get(i + 1).setLocalidad(calcula_localidad(i + 1));
                     Ordena_localidades();
                     fusion_contigua();
@@ -140,7 +140,7 @@ public class PrimerAjuste extends GestionRAM {
                 if (proceso.getTamaño() == RAM.get(i).getTamaño()) {
                     RAM.get(i).setTamaño(proceso.getTamaño());
                     RAM.get(i).setProceso(proceso.getId());
-                    break;
+                    return true;
                 }
                 Particiones separacion = new Particiones(false, Math.abs(proceso.getTamaño() - RAM.get(i).getTamaño()), 0, 0, etiqueta);
                 etiqueta++;
@@ -150,7 +150,7 @@ public class PrimerAjuste extends GestionRAM {
                 RAM.get(i + 1).setLocalidad(calcula_localidad(i + 1));
                 Ordena_localidades();
                 fusion_contigua();
-                break;
+                return true;
             }
             if (RAM.get(i).isEstado() == false) {
                 IndiceFragmentaciones.add(RAM.get(i));
